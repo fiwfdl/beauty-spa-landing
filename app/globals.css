@@ -1,0 +1,334 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Serenity Spa — design tokens
+   Layer 1 (primitive) -> Layer 2 (semantic) -> Layer 3 (component)
+   Design system: Soft UI Evolution (spa / wellness)
+   Brand: soft pink, sage, gold + Cormorant Garamond / Montserrat
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* ----- Layer 1: primitive color ----- */
+    --pink-100: #fceef0;
+    --pink-200: #f4d9db;
+    --pink-300: #e8b4b8;
+    --pink-500: #c97f87;
+    --sage-100: #edf6f0;
+    --sage-200: #d8ebdf;
+    --sage-300: #a8d5ba;
+    --sage-700: #2f5540;
+    --sage-800: #24432f;
+    --gold-100: #f8f0d8;
+    --gold-300: #e4c869;
+    --gold-400: #d4af37;
+    --gold-700: #8a6d14;
+    --ink-600: #6b5f58;
+    --ink-700: #4a403a;
+    --ink-900: #2a2320;
+    --cream-50: #fbf7f4;
+    --cream-100: #f4ece7;
+    --tan-200: #e9dcd4;
+    --white: #ffffff;
+
+    /* ----- Layer 1: primitive type + space ----- */
+    --step-0: 1rem;
+    --step-1: 1.125rem;
+    --step-2: 1.5rem;
+    --step-3: 2rem;
+    --step-4: clamp(2.6rem, 6vw, 4.4rem);
+    --radius: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-pill: 999px;
+    --shadow-soft: 0 18px 40px -24px rgba(47, 85, 64, 0.4);
+    --shadow-lift: 0 30px 60px -34px rgba(47, 85, 64, 0.5);
+    --dur-fast: 180ms;
+    --dur-base: 260ms;
+    --dur-reveal: 760ms;
+    --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --ease-lux: cubic-bezier(0.16, 0.84, 0.44, 1);
+    --wrap: 70rem;
+
+    /* ----- Layer 2: semantic (shadcn/ui variables) ----- */
+    --background: var(--cream-50);
+    --foreground: var(--ink-900);
+    --card: var(--white);
+    --card-foreground: var(--ink-900);
+    --popover: var(--white);
+    --popover-foreground: var(--ink-900);
+    --primary: var(--sage-700);
+    --primary-foreground: var(--cream-50);
+    --secondary: var(--pink-100);
+    --secondary-foreground: var(--ink-900);
+    --muted: var(--cream-100);
+    --muted-foreground: var(--ink-600);
+    --accent: var(--gold-400);
+    --accent-foreground: var(--ink-900);
+    --destructive: #b3261e;
+    --destructive-foreground: var(--white);
+    --border: var(--tan-200);
+    --input: var(--tan-200);
+    --ring: var(--sage-700);
+
+    /* ----- Layer 3: component ----- */
+    --btn-primary-bg: var(--primary);
+    --btn-primary-fg: var(--primary-foreground);
+    --btn-ghost-fg: var(--primary);
+    --shadow-btn: 0 14px 26px -18px rgba(47, 85, 64, 0.85);
+    --shadow-btn-hover: 0 20px 34px -20px rgba(47, 85, 64, 0.9);
+    --header-bg: color-mix(in srgb, var(--background) 88%, transparent);
+    --surface-alt: var(--cream-100);
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.7;
+    letter-spacing: 0.005em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--foreground);
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-size: var(--step-4);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-size: var(--step-3);
+  }
+
+  h3 {
+    font-size: var(--step-2);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0 0 1rem;
+  }
+
+  a {
+    color: var(--primary);
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Signature art — reused across hero + about */
+  .art-halo {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.2;
+    opacity: 0.7;
+  }
+
+  .art-petal,
+  .art-leaf {
+    fill: color-mix(in srgb, var(--gold-300) 22%, transparent);
+    stroke: var(--primary);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  .art-leaf {
+    fill: color-mix(in srgb, var(--sage-700) 10%, transparent);
+    stroke: var(--primary);
+    stroke-width: 1.4;
+  }
+
+  .art-petal--core {
+    fill: color-mix(in srgb, var(--gold-400) 38%, transparent);
+    stroke: var(--primary);
+    stroke-width: 1.6;
+  }
+
+  .art-stem,
+  .art-water {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+
+  .art-water {
+    stroke: var(--accent);
+    opacity: 0.85;
+  }
+
+  .hero-art-glow {
+    position: absolute;
+    width: min(78%, 360px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 35%,
+      var(--cream-100),
+      transparent 68%
+    );
+    border: 1px solid var(--border);
+  }
+
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, var(--gold-300), var(--gold-400));
+    box-shadow: 0 8px 18px -12px rgba(42, 35, 32, 0.9);
+  }
+
+  .brand-mark .mark-line {
+    fill: none;
+    stroke: var(--ink-900);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .about-panel {
+    background:
+      radial-gradient(
+        520px 260px at 82% -10%,
+        color-mix(in srgb, var(--gold-400) 20%, transparent),
+        transparent 70%
+      ),
+      linear-gradient(160deg, var(--sage-800), var(--sage-700));
+  }
+
+  .about-sprig .art-stem,
+  .about-sprig .art-water {
+    stroke: var(--gold-300);
+  }
+
+  .about-sprig .art-leaf {
+    fill: color-mix(in srgb, var(--gold-300) 16%, transparent);
+    stroke: var(--gold-300);
+    stroke-width: 1.2;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 2.2rem;
+    height: 1px;
+    background-color: var(--accent);
+  }
+
+  .check-list li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
+  .check-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  .card-accent::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold-400), var(--gold-300));
+    opacity: 0;
+    transition: opacity var(--dur-base) ease;
+  }
+
+  .card-accent:hover::before {
+    opacity: 1;
+  }
+
+  /* One orchestrated page-load motion (single system) */
+  .reveal {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-rise var(--dur-reveal) var(--ease-lux) both;
+      animation-delay: var(--d, 0ms);
+    }
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
