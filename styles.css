@@ -1,6 +1,8 @@
 /* ============================================================
    Serenity Spa — stylesheet
    Token layers: primitive -> semantic -> component
+   Direction: calm luxury / minimalism-Swiss (design engine)
+   Palette: brand cream / forest / gold (unchanged primitives)
    ============================================================ */
 
 :root {
@@ -18,13 +20,14 @@
   --white: #ffffff;
 
   /* Primitive: type + space */
-  --font-display: Georgia, "Times New Roman", serif;
-  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Lora", Georgia, "Times New Roman", serif;
+  --font-body: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --step-0: 1rem;
   --step-1: 1.125rem;
   --step-2: 1.5rem;
   --step-3: 2rem;
-  --step-4: clamp(2.25rem, 5vw, 3.5rem);
+  --step-4: clamp(2.6rem, 6vw, 4.4rem);
+  --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
@@ -32,9 +35,19 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4.5rem;
+  --space-9: 6.5rem;
   --radius: 14px;
+  --radius-lg: 26px;
   --radius-pill: 999px;
   --shadow-soft: 0 18px 40px -24px rgba(26, 42, 34, 0.45);
+  --shadow-lift: 0 30px 60px -34px rgba(26, 42, 34, 0.55);
+
+  /* Primitive: motion */
+  --dur-fast: 180ms;
+  --dur-base: 260ms;
+  --dur-reveal: 760ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-lux: cubic-bezier(0.16, 0.84, 0.44, 1);
 
   /* Semantic */
   --color-bg: var(--cream-50);
@@ -44,6 +57,7 @@
   --color-text: var(--forest-900);
   --color-text-muted: var(--stone-600);
   --color-accent: var(--gold-400);
+  --color-accent-soft: var(--gold-300);
   --color-primary: var(--forest-700);
   --color-primary-strong: var(--forest-800);
   --color-on-primary: var(--cream-50);
@@ -68,8 +82,10 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
+  font-weight: 400;
   font-size: var(--step-0);
-  line-height: 1.65;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -77,15 +93,17 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.15;
+  font-weight: 500;
+  line-height: 1.12;
   color: var(--color-text);
   margin: 0 0 var(--space-4);
+  letter-spacing: -0.015em;
 }
 
 h1 {
   font-size: var(--step-4);
-  letter-spacing: -0.01em;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
 }
 
 h2 {
@@ -103,9 +121,11 @@ p {
 
 a {
   color: var(--color-primary);
+  text-underline-offset: 3px;
 }
 
-img {
+img,
+svg {
   max-width: 100%;
   display: block;
 }
@@ -139,11 +159,34 @@ ul {
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius);
   text-decoration: none;
-  transition: top 0.2s ease;
+  transition: top var(--dur-fast) ease;
 }
 
 .skip-link:focus {
   top: var(--space-4);
+}
+
+/* ---------- Orchestrated page-load reveal (single motion system) ---------- */
+.reveal {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal-rise var(--dur-reveal) var(--ease-lux) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes reveal-rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* ---------- Buttons ---------- */
@@ -152,13 +195,21 @@ ul {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 0.85rem 1.5rem;
+  min-height: 48px;
+  padding: 0.8rem 1.7rem;
   border-radius: var(--radius-pill);
+  font-family: var(--font-body);
   font-size: var(--step-0);
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
-  border: 2px solid transparent;
-  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-base) ease,
+    border-color var(--dur-base) ease,
+    color var(--dur-base) ease,
+    box-shadow var(--dur-base) ease;
 }
 
 .btn:hover {
@@ -168,10 +219,12 @@ ul {
 .btn-primary {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
+  box-shadow: 0 14px 26px -18px rgba(26, 42, 34, 0.85);
 }
 
 .btn-primary:hover {
   background-color: var(--color-primary-strong);
+  box-shadow: 0 20px 34px -20px rgba(26, 42, 34, 0.9);
 }
 
 .btn-ghost {
@@ -190,7 +243,8 @@ ul {
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: var(--color-bg);
+  background-color: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -199,7 +253,7 @@ ul {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding-block: var(--space-4);
+  padding-block: var(--space-3);
 }
 
 .brand {
@@ -213,19 +267,31 @@ ul {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  background: radial-gradient(circle at 32% 28%, var(--gold-300), var(--gold-400));
+  box-shadow: 0 8px 18px -12px rgba(26, 42, 34, 0.9);
+}
+
+.brand-mark svg {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+
+.brand-mark .mark-line {
+  fill: none;
+  stroke: var(--forest-900);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .brand-name {
   font-family: var(--font-display);
   font-size: var(--step-1);
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .site-nav ul {
@@ -237,6 +303,9 @@ ul {
   text-decoration: none;
   color: var(--color-text-muted);
   font-weight: 500;
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  transition: color var(--dur-fast) ease;
 }
 
 .site-nav a:hover {
@@ -245,29 +314,50 @@ ul {
 
 /* ---------- Hero ---------- */
 .hero {
+  position: relative;
+  overflow: hidden;
   background:
-    radial-gradient(1200px 400px at 80% -10%, var(--cream-100), transparent 60%),
+    radial-gradient(1100px 460px at 78% -12%, var(--cream-100), transparent 62%),
+    radial-gradient(700px 380px at 6% 108%, var(--cream-100), transparent 60%),
     var(--color-bg);
-  padding-block: var(--space-8);
+  padding-block: var(--space-9);
 }
 
 .hero-inner {
-  max-width: 46rem;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.hero-copy {
+  max-width: 40rem;
 }
 
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.8rem;
-  font-weight: 700;
+  letter-spacing: 0.22em;
+  font-size: 0.74rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 2.2rem;
+  height: 1px;
+  background-color: var(--color-accent);
 }
 
 .hero .lede {
   font-size: var(--step-1);
+  font-weight: 300;
   color: var(--color-text-muted);
-  max-width: 38rem;
+  max-width: 34rem;
 }
 
 .hero-actions {
@@ -289,14 +379,80 @@ ul {
 .hero-stats dt {
   font-family: var(--font-display);
   font-size: var(--step-2);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-primary);
 }
 
 .hero-stats dd {
   margin: var(--space-2) 0 0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: var(--color-text-muted);
+}
+
+/* Hero signature illustration */
+.hero-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding-block: var(--space-4);
+}
+
+.hero-art::before {
+  content: "";
+  position: absolute;
+  width: min(78%, 360px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--cream-100), transparent 68%);
+  border: 1px solid var(--color-border);
+}
+
+.hero-art-svg {
+  position: relative;
+  width: min(100%, 380px);
+  height: auto;
+}
+
+.hero-art-svg .art-halo {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.2;
+  opacity: 0.7;
+}
+
+.hero-art-svg .art-petal,
+.hero-art-svg .art-leaf {
+  fill: color-mix(in srgb, var(--gold-300) 22%, transparent);
+  stroke: var(--color-primary);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.hero-art-svg .art-leaf {
+  fill: color-mix(in srgb, var(--forest-700) 10%, transparent);
+  stroke: var(--color-primary-strong);
+  stroke-width: 1.4;
+}
+
+.hero-art-svg .art-petal--core {
+  fill: color-mix(in srgb, var(--gold-400) 38%, transparent);
+  stroke: var(--color-primary-strong);
+  stroke-width: 1.6;
+}
+
+.hero-art-svg .art-stem,
+.hero-art-svg .art-water {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.hero-art-svg .art-water {
+  stroke: var(--color-accent);
+  opacity: 0.85;
 }
 
 /* ---------- Sections ---------- */
@@ -312,6 +468,7 @@ ul {
   max-width: 40rem;
   color: var(--color-text-muted);
   font-size: var(--step-1);
+  font-weight: 300;
   margin-bottom: var(--space-6);
 }
 
@@ -323,11 +480,36 @@ ul {
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   padding: var(--space-6);
   box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) ease,
+    border-color var(--dur-base) ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-400), var(--gold-300));
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+  border-color: var(--gold-300);
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card p {
@@ -338,6 +520,7 @@ ul {
 .card-meta {
   margin: 0;
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--color-primary);
 }
 
@@ -360,7 +543,7 @@ ul {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.55em;
+  top: 0.6em;
   width: 0.6rem;
   height: 0.6rem;
   border-radius: 50%;
@@ -368,28 +551,58 @@ ul {
 }
 
 .about-panel {
+  position: relative;
+  overflow: hidden;
   background:
+    radial-gradient(520px 260px at 82% -10%, color-mix(in srgb, var(--gold-400) 20%, transparent), transparent 70%),
     linear-gradient(160deg, var(--forest-800), var(--forest-900));
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   padding: var(--space-7) var(--space-6);
   color: var(--color-on-primary);
-  min-height: 340px;
+  min-height: 380px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: var(--space-6);
   box-shadow: var(--shadow-soft);
+}
+
+.about-sprig {
+  width: 11rem;
+  height: auto;
+  align-self: center;
+  margin-top: var(--space-3);
+}
+
+.about-sprig .art-stem,
+.about-sprig .art-water {
+  fill: none;
+  stroke: var(--gold-300);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.about-sprig .art-leaf {
+  fill: color-mix(in srgb, var(--gold-300) 16%, transparent);
+  stroke: var(--gold-300);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
 }
 
 .about-panel-mark {
   font-family: var(--font-display);
   font-size: var(--step-4);
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: var(--gold-300);
+  margin: 0;
 }
 
 .about-panel-caption {
   margin: 0;
   color: var(--cream-100);
   font-size: var(--step-1);
+  font-weight: 300;
 }
 
 /* ---------- Contact ---------- */
@@ -407,11 +620,11 @@ ul {
 }
 
 .contact-details dt {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
   margin-bottom: var(--space-2);
 }
 
@@ -438,7 +651,7 @@ ul {
 .footer-brand {
   font-family: var(--font-display);
   font-size: var(--step-1);
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -449,13 +662,30 @@ ul {
 
 .footer-legal {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--cream-200);
   width: 100%;
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 860px) {
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  .hero-art {
+    order: -1;
+  }
+
+  .hero-art::before {
+    width: min(70%, 300px);
+  }
+
+  .hero-art-svg {
+    width: min(100%, 300px);
+  }
+
   .about-grid,
   .contact-grid {
     grid-template-columns: 1fr;
@@ -473,6 +703,10 @@ ul {
 @media (max-width: 520px) {
   .brand-name {
     display: none;
+  }
+
+  .hero {
+    padding-block: var(--space-8);
   }
 
   .hero-stats {
@@ -503,6 +737,13 @@ ul {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
